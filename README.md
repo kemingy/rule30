@@ -1,6 +1,6 @@
 # Rule30
 
-Randome number generator with cellular automaton rule 30.
+Pseudo random number generator with cellular automaton rule 30.
 
 ## Reference
 
