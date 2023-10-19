@@ -30,8 +30,8 @@ jobs:
     - uses: dtolnay/rust-toolchain@stable
       with:
         toolchain: nightly
-    - name: Install rustfmt
-      run: rustup component add rustfmt
+    - name: Install lint tools
+      run: rustup component add rustfmt clippy
     - name: Lint
       run: |
         cargo +nightly fmt -- --check
