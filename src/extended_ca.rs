@@ -33,7 +33,7 @@ impl ExtendedCA {
     /// This requires further investigation.
     #[inline]
     fn step(&mut self) {
-        let legacy = self.state.clone();
+        let legacy = self.state;
         let extend = legacy[(SIZE - 2)..]
             .iter()
             .chain(legacy.iter())

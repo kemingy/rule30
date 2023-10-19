@@ -21,17 +21,29 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  build:
+  lint:
 
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Build
-      run: cargo build --verbose
+    - uses: actions/checkout@v4
+    - uses: dtolnay/rust-toolchain@stable
+      with:
+        toolchain: nightly
     - name: Lint
       run: |
         cargo +nightly fmt -- --check
         cargo clippy -- -D warnings
-    - name: Run tests
+
+  test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v4
+    - uses: dtolnay/rust-toolchain@stable
+      with:
+        toolchain: stable
+    - name: Test
       run: cargo test --verbose
