@@ -15,8 +15,21 @@ pub struct ExtendedCA {
 }
 
 impl ExtendedCA {
+    /// Create a new `ExtendedCA` instance with the given state.
     pub fn new(state: [u64; SIZE]) -> Self {
         ExtendedCA { state }
+    }
+
+    /// Extend the state with 2 more cells on both sides to make the evolution code simple.
+    #[inline]
+    fn extend_state(&self) -> [u64; SIZE + 4] {
+        let mut extend = [0u64; SIZE + 4];
+        extend[2..(SIZE + 2)].copy_from_slice(&self.state);
+        extend[0] = self.state[SIZE - 2];
+        extend[1] = self.state[SIZE - 1];
+        extend[SIZE + 2] = self.state[0];
+        extend[SIZE + 3] = self.state[1];
+        extend
     }
 
     /// From the Wolfram reference on Extended CA:
@@ -33,12 +46,7 @@ impl ExtendedCA {
     /// This requires further investigation.
     #[inline]
     fn step(&mut self) {
-        let legacy = self.state;
-        let extend = legacy[(SIZE - 2)..]
-            .iter()
-            .chain(legacy.iter())
-            .chain(legacy[..2].iter())
-            .collect::<Vec<_>>();
+        let extend = self.extend_state();
         for i in 0..SIZE {
             self.state[i] =
                 extend[i] | extend[i + 1] ^ extend[i + 2] ^ extend[i + 3] | extend[i + 4];
@@ -46,6 +54,7 @@ impl ExtendedCA {
     }
 }
 
+#[derive(Debug)]
 pub struct ExtendedRngSeed(pub [u8; SIZE * 8]);
 
 impl Default for ExtendedRngSeed {

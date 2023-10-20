@@ -21,11 +21,14 @@ const CLEAN_RIGHT: u32 = 0b1111_1111_1111_1111_1111_1111_1111_1110;
 #[derive(Clone, Eq, PartialEq, Debug)]
 pub struct Rule30 {
     state: [u32; SIZE],
+    round: usize,
 }
 
 impl Rule30 {
+    /// Create a new `Rule30` instance with the given state.
     pub fn new(state: [u32; SIZE]) -> Self {
-        let mut r = Rule30 { state };
+        let round = (32 + SIZE - 1) / SIZE;
+        let mut r = Rule30 { state, round };
         r.align();
         r
     }
@@ -53,6 +56,7 @@ impl Rule30 {
     }
 }
 
+#[derive(Debug)]
 pub struct Rule30RngSeed(pub [u8; SIZE * 4]);
 
 impl Default for Rule30RngSeed {
@@ -87,7 +91,7 @@ impl RngCore for Rule30 {
     #[inline]
     fn next_u32(&mut self) -> u32 {
         let mut record: u32 = 0;
-        for _ in 0..((32.0 / SIZE as f32).ceil() as usize) {
+        for _ in 0..self.round {
             for i in 0..SIZE {
                 record = (record | (self.state[i] & MASK)) << 1;
             }

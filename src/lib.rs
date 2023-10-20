@@ -1,4 +1,19 @@
 //! Pseudo random number generators with Cellular Automaton rule 30.
+//!
+//! ## Examples
+//!
+//! ```
+//! use rand_core::{RngCore, SeedableRng};
+//! use rule30::ExtendedCA;
+//!
+//! let mut ca = ExtendedCA::seed_from_u64(42);
+//! println!("{}", ca.next_u64());
+//! ```
+
+#![forbid(unsafe_code)]
+#![deny(missing_docs)]
+#![deny(missing_debug_implementations)]
+#![no_std]
 
 mod extended_ca;
 mod rule30;
