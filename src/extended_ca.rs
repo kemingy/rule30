@@ -2,7 +2,7 @@ use rand_core::impls::fill_bytes_via_next;
 use rand_core::le::read_u64_into;
 use rand_core::{RngCore, SeedableRng};
 
-// Default cells number is 80 x 64 = 5120 cells.
+// Default cells number is 80 x 64 = 5120.
 const SIZE: usize = 80;
 const SKIP: usize = 4;
 const INDEX: [usize; SKIP] = [16, 32, 48, 54];

@@ -1,3 +1,5 @@
+//! Pseudo random number generators with Cellular Automaton rule 30.
+
 mod extended_ca;
 mod rule30;
 
