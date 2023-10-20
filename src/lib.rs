@@ -1,4 +1,4 @@
-//! Pseudo random number generators with Cellular Automaton rule 30.
+//! Pseudo random number generators with cellular automaton rule 30.
 //!
 //! ## Examples
 //!
