@@ -2,6 +2,11 @@
 
 Pseudo random number generator with cellular automaton rule 30.
 
+## Features
+
+- [x] `no_std`
+- [x] Extend CA for better performance
+
 ## Usage
 
 ```rust
