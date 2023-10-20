@@ -12,7 +12,6 @@ fn main() {
     let mut ca = ExtendedCA::seed_from_u64(42);
     println!("{}", ca.next_u64());
 }
-
 ```
 
 ## Reference

@@ -8,7 +8,8 @@ readme = "README.md"
 repository = "https://github.com/kemingy/rule30"
 description = "Pseudo random number generator with cellular automaton rule 30."
 documentation = "https://docs.rs/rule30"
-exclude = ["target", "tests", "benches", ".github"]
+keywords = ["random", "rng", "rule30", "cellular automaton"]
+categories = ["algorithms"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
