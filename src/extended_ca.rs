@@ -20,7 +20,7 @@ impl ExtendedCA {
         ExtendedCA { state }
     }
 
-    /// Extend the state with 2 more cells on both sides to make the evolution code simple.
+    /// Extend the state array with 2 more states on both sides to make the evolution code simple.
     #[inline]
     fn extend_state(&self) -> [u64; SIZE + 4] {
         let mut extend = [0u64; SIZE + 4];
