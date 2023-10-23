@@ -95,7 +95,7 @@ impl RngCore for ExtendedCA {
     fn next_u64(&mut self) -> u64 {
         let mut num: u64 = 0;
         for i in INDEX.iter() {
-            num = (num | (self.state[*i] & MASK)) << 1;
+            num = (num << 1) | (self.state[*i] & MASK);
         }
         self.step();
         num
@@ -122,21 +122,21 @@ mod tests {
     #[test]
     fn test_extended_ca_construction() {
         let mut rng_u64 = ExtendedCA::seed_from_u64(42);
-        assert_eq!(rng_u64.next_u64(), 6730243649896625144);
-        assert_eq!(rng_u64.next_u64(), 7924083544289116156);
+        assert_eq!(rng_u64.next_u64(), 12588493861803088380);
+        assert_eq!(rng_u64.next_u64(), 13185413808999333886);
 
         let mut rng_u32 = ExtendedCA::seed_from_u64(42);
-        assert_eq!(rng_u32.next_u32(), 4092244984);
-        assert_eq!(rng_u32.next_u32(), 4225695740);
+        assert_eq!(rng_u32.next_u32(), 2046122492);
+        assert_eq!(rng_u32.next_u32(), 4260331518);
 
         let mut rng_gen = ExtendedCA::from_rng(&mut rng_u64).unwrap();
-        assert_eq!(rng_gen.next_u64(), 18446744073709551584);
+        assert_eq!(rng_gen.next_u64(), 18446744073709551615);
 
         let seed: [u8; SIZE * 8] = core::array::from_fn(|x| x as u8);
         let mut rng_seed = ExtendedCA::from_seed(ExtendedRngSeed(seed));
-        assert_eq!(rng_seed.next_u64(), 4476646337808449056);
+        assert_eq!(rng_seed.next_u64(), 2238323168904224528);
 
         let mut rng_double_check = ExtendedCA::seed_from_u64(42);
-        assert_eq!(rng_double_check.next_u64(), 6730243649896625144);
+        assert_eq!(rng_double_check.next_u64(), 12588493861803088380);
     }
 }
