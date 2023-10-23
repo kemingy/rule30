@@ -93,7 +93,8 @@ impl RngCore for Rule30 {
         let mut record: u32 = 0;
         for _ in 0..self.round {
             for i in 0..SIZE {
-                record = (record | (self.state[i] & MASK)) << 1;
+                // assign the bit to the second bit of `record`
+                record = (record | (self.state[i] & MASK)).rotate_left(1);
             }
             self.step();
         }
@@ -126,21 +127,21 @@ mod tests {
     #[test]
     fn test_rule30_construction() {
         let mut rng_u32 = Rule30::seed_from_u64(42);
-        assert_eq!(rng_u32.next_u32(), 934717800);
-        assert_eq!(rng_u32.next_u32(), 4047338072);
+        assert_eq!(rng_u32.next_u32(), 934717802);
+        assert_eq!(rng_u32.next_u32(), 4047338106);
 
         let mut rng_u64 = Rule30::seed_from_u64(42);
-        assert_eq!(rng_u64.next_u64(), 17383184656030411112);
-        assert_eq!(rng_u64.next_u64(), 11370733725692485760);
+        assert_eq!(rng_u64.next_u64(), 17383184802059299178);
+        assert_eq!(rng_u64.next_u64(), 11370733897491177609);
 
         let mut rng_gen = Rule30::from_rng(&mut rng_u32).unwrap();
-        assert_eq!(rng_gen.next_u32(), 102388752);
+        assert_eq!(rng_gen.next_u32(), 1149652508);
 
         let seed: [u8; SIZE * 4] = core::array::from_fn(|x| x as u8);
         let mut rng_seed = Rule30::from_seed(Rule30RngSeed(seed));
         assert_eq!(rng_seed.next_u32(), 176394664);
 
         let mut rng_double_check = Rule30::seed_from_u64(42);
-        assert_eq!(rng_double_check.next_u32(), 934717800);
+        assert_eq!(rng_double_check.next_u32(), 934717802);
     }
 }
