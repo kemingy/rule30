@@ -46,7 +46,7 @@ impl Rule30 {
         }
     }
 
-    /// Rule 30: `next_state[i] = state[i-1] ^ state[i] | state[i+1]`
+    /// Rule 30: `next_state[i] = state[i-1] ^ (state[i] | state[i+1])`
     #[inline]
     fn step(&mut self) {
         for i in 0..SIZE {
