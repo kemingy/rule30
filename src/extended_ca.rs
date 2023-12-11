@@ -20,15 +20,13 @@ impl ExtendedCA {
         ExtendedCA { state }
     }
 
-    /// Extend the state array with 2 more states on both sides to make the evolution code simple.
+    /// Extend the state array with 1 more state on both sides to make the evolution code simple.
     #[inline]
-    fn extend_state(&self) -> [u64; SIZE + 4] {
-        let mut extend = [0u64; SIZE + 4];
-        extend[2..(SIZE + 2)].copy_from_slice(&self.state);
-        extend[0] = self.state[SIZE - 2];
-        extend[1] = self.state[SIZE - 1];
-        extend[SIZE + 2] = self.state[0];
-        extend[SIZE + 3] = self.state[1];
+    fn extend_state(&self) -> [u64; SIZE + 2] {
+        let mut extend = [0u64; SIZE + 2];
+        extend[1..(SIZE + 1)].copy_from_slice(&self.state);
+        extend[0] = self.state[SIZE - 1];
+        extend[SIZE + 1] = self.state[0];
         extend
     }
 
@@ -41,15 +39,19 @@ impl ExtendedCA {
     /// would choose 5 neighbors at the same position in the adjacent states.
     /// The evolving rule is similar to the Rule 30 (3 neighbors):
     ///
-    /// `next_state[i] = state[i-2] | state[i-1] ^ state[i] ^ state[i+1] | state[i+2]`
+    /// ```text
+    /// next_state[i] =
+    ///     (state[i-1] | (state[i-1] <<. 2)) ^ state[i] ^ (state[i+1] | (state[i+1] <<. 2))
+    /// ```
     ///
     /// This requires further investigation.
     #[inline]
     fn step(&mut self) {
         let extend = self.extend_state();
         for i in 0..SIZE {
-            self.state[i] =
-                extend[i] | extend[i + 1] ^ extend[i + 2] ^ extend[i + 3] | extend[i + 4];
+            self.state[i] = (extend[i] | extend[i].rotate_left(2))
+                ^ extend[i + 1]
+                ^ (extend[i + 2] | extend[i + 2].rotate_left(2));
         }
     }
 }
@@ -123,14 +125,14 @@ mod tests {
     fn test_extended_ca_construction() {
         let mut rng_u64 = ExtendedCA::seed_from_u64(42);
         assert_eq!(rng_u64.next_u64(), 12588493861803088380);
-        assert_eq!(rng_u64.next_u64(), 13185413808999333886);
+        assert_eq!(rng_u64.next_u64(), 11506781102957086073);
 
         let mut rng_u32 = ExtendedCA::seed_from_u64(42);
         assert_eq!(rng_u32.next_u32(), 2046122492);
-        assert_eq!(rng_u32.next_u32(), 4260331518);
+        assert_eq!(rng_u32.next_u32(), 2515486073);
 
         let mut rng_gen = ExtendedCA::from_rng(&mut rng_u64).unwrap();
-        assert_eq!(rng_gen.next_u64(), 18446744073709551615);
+        assert_eq!(rng_gen.next_u64(), 15867017459530598174);
 
         let seed: [u8; SIZE * 8] = core::array::from_fn(|x| x as u8);
         let mut rng_seed = ExtendedCA::from_seed(ExtendedRngSeed(seed));
