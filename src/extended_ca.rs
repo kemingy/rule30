@@ -22,7 +22,7 @@ impl ExtendedCA {
 
     /// Clone the inner state.
     pub fn state(&self) -> [u64; SIZE] {
-        self.state.clone()
+        self.state
     }
 
     /// Reset with the provided state.

@@ -12,6 +12,7 @@ on:
       - '.github/workflows/python.yml'
       - 'python/**'
   merge_group:
+  workflow_dispatch:
 
 jobs:
   lint:
@@ -21,8 +22,8 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
+      with:
+        python-version: '3.10'
     - name: Install lint tools
       run: pip install ruff
     - name: Lint
@@ -35,8 +36,8 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
+      with:
+        python-version: '3.10'
     - name: Install test tools
       run: pip install pytest
     - name: Lint
