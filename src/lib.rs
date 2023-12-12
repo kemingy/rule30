@@ -16,7 +16,11 @@
 #![no_std]
 
 mod extended_ca;
+pub mod prelude;
 mod rule30;
+
+// Re-exports from rand_core
+pub use rand_core::{RngCore, SeedableRng};
 
 pub use self::extended_ca::ExtendedCA;
 pub use self::rule30::Rule30;
