@@ -20,6 +20,16 @@ impl ExtendedCA {
         ExtendedCA { state }
     }
 
+    /// Clone the inner state.
+    pub fn state(&self) -> [u64; SIZE] {
+        self.state.clone()
+    }
+
+    /// Reset with the provided state.
+    pub fn reset(&mut self, state: [u64; SIZE]) {
+        self.state = state;
+    }
+
     /// Extend the state array with 1 more state on both sides to make the evolution code simple.
     #[inline]
     fn extend_state(&self) -> [u64; SIZE + 2] {

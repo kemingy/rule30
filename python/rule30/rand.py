@@ -21,7 +21,11 @@ class Rule30Random(Random):
 
         If ca is not specified, use the default Rule 30 CA.
         """
-        self._ca = Rule30(seed) if seed else Rule30(42)
+        if seed is None:
+            seed = 42
+        elif seed < 0:
+            raise ValueError("Seed must be a non-negative integer")
+        self._ca = Rule30(seed)
 
     def seed(
         self, a: int | float | str | bytes | bytearray | None = None, version: int = 2
@@ -29,13 +33,20 @@ class Rule30Random(Random):
         return super().seed(a, version)
 
     def getstate(self) -> tuple[Any, ...]:
-        return super().getstate()
+        return self._ca.get_state()
 
     def setstate(self, state: tuple[Any, ...]) -> None:
-        return super().setstate(state)
+        self._ca.set_state(state)
 
     def getrandbits(self, k: int) -> int:
-        return super().getrandbits(k)
+        if k < 0:
+            raise ValueError("number of bits must be non-negative")
+        value = 0
+        round = (k + 63) // 64
+        for _ in range(round):
+            value = (value << 64) | self._ca.next_u64()
+        x = int.from_bytes(value.to_bytes(round * 8, "big"), "big")
+        return x >> (round * 64 - k)
 
     def random(self):
         """Return a random number between 0 and 1."""

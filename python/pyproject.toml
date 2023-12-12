@@ -10,8 +10,8 @@ dynamic = ["version"]
 license = "Apache-2.0"
 
 [project.urls]
-documentation = ""
-repository = "github.com/kemingy/rule30"
+documentation = "https://github.com/kemingy/rule30"
+repository = "https://github.com/kemingy/rule30"
 
 [build-system]
 requires = ["maturin>=1.4,<2.0"]

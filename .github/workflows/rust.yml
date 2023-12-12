@@ -8,6 +8,9 @@ on:
       - 'src/**'
       - 'Cargo.toml'
       - 'Cargo.lock'
+      - 'python/src/**'
+      - 'python/Cargo.toml'
+      - 'python/Cargo.lock'
   pull_request:
     branches: [ "main" ]
     paths:
@@ -15,6 +18,9 @@ on:
       - 'src/**'
       - 'Cargo.toml'
       - 'Cargo.lock'
+      - 'python/src/**'
+      - 'python/Cargo.toml'
+      - 'python/Cargo.lock'
   merge_group:
 
 env:
@@ -34,6 +40,9 @@ jobs:
       run: rustup component add rustfmt clippy
     - name: Lint
       run: |
+        cargo +nightly fmt -- --check
+        cargo clippy -- -D warnings
+        cd python
         cargo +nightly fmt -- --check
         cargo clippy -- -D warnings
 
