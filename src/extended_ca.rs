@@ -41,17 +41,21 @@ impl ExtendedCA {
     ///
     /// ```text
     /// next_state[i] =
-    ///     (state[i-1] | (state[i-1] <<. 2)) ^ state[i] ^ (state[i+1] | (state[i+1] <<. 2))
+    ///     (state[i-1] | (state[i-1] <<. 3)) ^ state[i] ^ (state[i+1] | (state[i+1] <<. 3))
     /// ```
+    ///
+    /// Any odd number step rotation can be used. "3" is chosen since it requires
+    /// less round to spread to all the cells. While "1" might break the "nonadjacent"
+    /// rule.
     ///
     /// This requires further investigation.
     #[inline]
     fn step(&mut self) {
         let extend = self.extend_state();
         for i in 0..SIZE {
-            self.state[i] = (extend[i] | extend[i].rotate_left(2))
+            self.state[i] = (extend[i] | extend[i].rotate_left(3))
                 ^ extend[i + 1]
-                ^ (extend[i + 2] | extend[i + 2].rotate_left(2));
+                ^ (extend[i + 2] | extend[i + 2].rotate_left(3));
         }
     }
 }
@@ -125,14 +129,14 @@ mod tests {
     fn test_extended_ca_construction() {
         let mut rng_u64 = ExtendedCA::seed_from_u64(42);
         assert_eq!(rng_u64.next_u64(), 12588493861803088380);
-        assert_eq!(rng_u64.next_u64(), 11506781102957086073);
+        assert_eq!(rng_u64.next_u64(), 13092609834719595470);
 
         let mut rng_u32 = ExtendedCA::seed_from_u64(42);
         assert_eq!(rng_u32.next_u32(), 2046122492);
-        assert_eq!(rng_u32.next_u32(), 2515486073);
+        assert_eq!(rng_u32.next_u32(), 3980348366);
 
         let mut rng_gen = ExtendedCA::from_rng(&mut rng_u64).unwrap();
-        assert_eq!(rng_gen.next_u64(), 15867017459530598174);
+        assert_eq!(rng_gen.next_u64(), 9131884500388100982);
 
         let seed: [u8; SIZE * 8] = core::array::from_fn(|x| x as u8);
         let mut rng_seed = ExtendedCA::from_seed(ExtendedRngSeed(seed));
