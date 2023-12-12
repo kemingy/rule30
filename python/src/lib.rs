@@ -42,12 +42,10 @@ impl Rule30 {
             Ok(state) => {
                 self.0.reset(state);
                 Ok(())
-            },
-            Err(_) => {
-                Err(PyErr::new::<pyo3::exceptions::PyValueError, _>(
-                    "state must be a list of 80 positive integers",
-                ))
             }
+            Err(_) => Err(PyErr::new::<pyo3::exceptions::PyValueError, _>(
+                "state must be a list of 80 positive integers",
+            )),
         }
     }
 }
