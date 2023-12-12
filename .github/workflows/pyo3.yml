@@ -18,6 +18,10 @@ on:
 permissions:
   contents: read
 
+env:
+  PYTHON_DIR: "python"
+  PYTHON_DIST_DIR: "python/dist"
+
 jobs:
   linux:
     runs-on: ubuntu-latest
@@ -36,11 +40,12 @@ jobs:
           args: --release --out dist --find-interpreter
           sccache: 'true'
           manylinux: auto
+          working-directory: ${{ env.PYTHON_DIR }}
       - name: Upload wheels
         uses: actions/upload-artifact@v3
         with:
           name: wheels
-          path: dist
+          path: ${{ env.PYTHON_DIST_DIR }}
 
   windows:
     runs-on: windows-latest
@@ -59,11 +64,12 @@ jobs:
           target: ${{ matrix.target }}
           args: --release --out dist --find-interpreter
           sccache: 'true'
+          working-directory: ${{ env.PYTHON_DIR }}
       - name: Upload wheels
         uses: actions/upload-artifact@v3
         with:
           name: wheels
-          path: dist
+          path: ${{ env.PYTHON_DIST_DIR }}
 
   macos:
     runs-on: macos-latest
@@ -81,11 +87,12 @@ jobs:
           target: ${{ matrix.target }}
           args: --release --out dist --find-interpreter
           sccache: 'true'
+          working-directory: ${{ env.PYTHON_DIR }}
       - name: Upload wheels
         uses: actions/upload-artifact@v3
         with:
           name: wheels
-          path: dist
+          path: ${{ env.PYTHON_DIST_DIR }}
 
   sdist:
     runs-on: ubuntu-latest
@@ -96,11 +103,12 @@ jobs:
         with:
           command: sdist
           args: --out dist
+          working-directory: ${{ env.PYTHON_DIR }}
       - name: Upload sdist
         uses: actions/upload-artifact@v3
         with:
           name: wheels
-          path: dist
+          path: ${{ env.PYTHON_DIST_DIR }}
 
   release:
     name: Release
@@ -111,6 +119,7 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: wheels
+          path: ${{ env.PYTHON_DIST_DIR }}
       - name: Publish to PyPI
         uses: PyO3/maturin-action@v1
         env:
@@ -118,3 +127,4 @@ jobs:
         with:
           command: upload
           args: --non-interactive --skip-existing *
+          working-directory: ${{ env.PYTHON_DIR }}
