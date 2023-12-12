@@ -14,12 +14,25 @@ Pseudo random number generator with cellular automaton rule 30.
 ## Usage
 
 ```rust
-use rand_core::{RngCore, SeedableRng};
-use rule30::ExtendedCA;
+use rule30::prelude::*;
+
 
 fn main() {
     let mut ca = ExtendedCA::seed_from_u64(42);
     println!("{}", ca.next_u64());
+}
+```
+
+To work with `rand` crate:
+
+```rust
+use rule30::prelude::*;
+use rand::Rng;
+
+
+fn main() {
+    let mut ca = ExtendedCA::seed_from_u64(42);
+    println!("{}", ca.gen::<f64>());
 }
 ```
 
