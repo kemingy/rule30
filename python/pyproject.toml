@@ -1,0 +1,34 @@
+[project]
+name = "rule30py"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Rust",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+]
+dynamic = ["version"]
+license = "Apache-2.0"
+
+[project.urls]
+documentation = ""
+repository = "github.com/kemingy/rule30"
+
+[build-system]
+requires = ["maturin>=1.4,<2.0"]
+build-backend = "maturin"
+
+[tool.maturin]
+bindings = "pyo3"
+features = ["pyo3/extension-module"]
+compatibility = "manylinux2014"
+
+[tool.ruff]
+target-version = "py39"
+logger-objects = ["spycar.logger", "spycar.log.logger"]
+[tool.ruff.lint]
+select = ["E", "F", "G", "B", "I", "SIM", "TID", "PL", "RUF"]
+ignore = ["E501"]
+[tool.ruff.lint.isort]
+known-first-party = ["spycar"]
+[tool.ruff.pylint]
+max-args = 7
