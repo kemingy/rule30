@@ -40,11 +40,7 @@ jobs:
       run: rustup component add rustfmt clippy
     - name: Lint
       run: |
-        cargo +nightly fmt -- --check
-        cargo clippy -- -D warnings
-        cd python
-        cargo +nightly fmt -- --check
-        cargo clippy -- -D warnings
+        make lint-rust
 
   test:
     strategy:
@@ -57,4 +53,4 @@ jobs:
       with:
         toolchain: stable
     - name: Test
-      run: cargo test --verbose
+      run: make test-rust

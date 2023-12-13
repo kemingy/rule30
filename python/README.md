@@ -9,7 +9,7 @@ pip install rule30py
 ## Usage
 
 ```python
-from rule30 import random, Rule30Random
+from rule30py import random, Rule30Random
 
 print(random())
 

@@ -27,8 +27,7 @@ jobs:
     - name: Install lint tools
       run: pip install ruff
     - name: Lint
-      run: |
-        ruff check python/rule30
+      run: make lint-python
 
   test:
     runs-on: ubuntu-latest
@@ -41,7 +40,4 @@ jobs:
     - name: Install test tools
       run: pip install pytest
     - name: Lint
-      run: |
-        cd python
-        pip install -e .
-        pytest -v
+      run: make test-python

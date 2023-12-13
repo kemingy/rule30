@@ -1,11 +1,12 @@
 from __future__ import annotations
 
 from random import Random
+from time import time
 from typing import Any
 
-from rule30py import Rule30
+from .rule30py import Rule30
 
-_default_ca = Rule30()
+_default_ca = Rule30(int(time()))
 
 
 def random():
@@ -19,10 +20,10 @@ class Rule30Random(Random):
     def __init__(self, seed: int | None = None):
         """Create a new random number generator.
 
-        If ca is not specified, use the default Rule 30 CA.
+        If seed is not specified, use the current time as seed.
         """
         if seed is None:
-            seed = 42
+            seed = int(time())
         elif seed < 0:
             raise ValueError("Seed must be a non-negative integer")
         self._ca = Rule30(seed)

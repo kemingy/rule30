@@ -19,8 +19,11 @@ build-backend = "maturin"
 
 [tool.maturin]
 bindings = "pyo3"
+# as a submodule
+module-name = "rule30.rule30py"
 features = ["pyo3/extension-module"]
-compatibility = "manylinux2014"
+include = ["README.md"]
+exclude = ["tests/**/*"]
 
 [tool.ruff]
 target-version = "py39"
