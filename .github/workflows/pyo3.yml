@@ -6,8 +6,6 @@
 name: PyO3
 
 on:
-  release:
-    types: [created]
   workflow_dispatch:
 
 permissions:
