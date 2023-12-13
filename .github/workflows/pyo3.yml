@@ -119,4 +119,4 @@ jobs:
         with:
           command: upload
           args: --non-interactive --skip-existing *
-          working-directory: ${{ env.PYTHON_DIR }}
+          working-directory: ${{ env.PYTHON_DIST_DIR }}
