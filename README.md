@@ -3,6 +3,7 @@
 [![Rust](https://github.com/kemingy/rule30/actions/workflows/rust.yml/badge.svg)](https://github.com/kemingy/rule30/actions/workflows/rust.yml)
 [![crates.io](https://img.shields.io/crates/v/rule30.svg)](https://crates.io/crates/rule30)
 [![docs.rs](https://docs.rs/rule30/badge.svg)](https://docs.rs/rule30)
+[![PyPI](https://badge.fury.io/py/rule30py.svg)](https://pypi.org/project/rule30py)
 
 Pseudo random number generator with cellular automaton rule 30.
 
