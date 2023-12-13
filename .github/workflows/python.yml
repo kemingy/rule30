@@ -1,0 +1,43 @@
+name: Python
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - '.github/workflows/python.yml'
+      - 'python/**'
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - '.github/workflows/python.yml'
+      - 'python/**'
+  merge_group:
+  workflow_dispatch:
+
+jobs:
+  lint:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    - name: Install lint tools
+      run: pip install ruff
+    - name: Lint
+      run: make lint-python
+
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    - name: Install test tools
+      run: pip install pytest
+    - name: Lint
+      run: make test-python
