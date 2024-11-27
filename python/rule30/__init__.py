@@ -1,3 +1,3 @@
 from rule30.rand import Rule30Random, random
 
-__all__ = ["random", "Rule30Random"]
+__all__ = ["Rule30Random", "random"]
