@@ -27,11 +27,6 @@ exclude = ["tests/**/*"]
 
 [tool.ruff]
 target-version = "py39"
-logger-objects = ["spycar.logger", "spycar.log.logger"]
 [tool.ruff.lint]
 select = ["E", "F", "G", "B", "I", "SIM", "TID", "PL", "RUF"]
 ignore = ["E501"]
-[tool.ruff.lint.isort]
-known-first-party = ["spycar"]
-[tool.ruff.pylint]
-max-args = 7
