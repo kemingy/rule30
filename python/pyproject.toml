@@ -22,7 +22,6 @@ bindings = "pyo3"
 # as a submodule
 module-name = "rule30.rule30py"
 features = ["pyo3/extension-module"]
-include = ["README.md"]
 exclude = ["tests/**/*"]
 
 [tool.ruff]
