@@ -183,4 +183,3 @@ jobs:
         with:
           command: upload
           args: --non-interactive --skip-existing wheels-*/*
-          working-directory: ${{ env.PYTHON_DIST_DIR }}
