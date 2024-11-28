@@ -27,7 +27,7 @@ pub struct Rule30 {
 impl Rule30 {
     /// Create a new `Rule30` instance with the given state.
     pub fn new(state: [u32; SIZE]) -> Self {
-        let round = (32 + SIZE - 1) / SIZE;
+        let round = 32usize.div_ceil(SIZE);
         let mut r = Rule30 { state, round };
         r.align();
         r
