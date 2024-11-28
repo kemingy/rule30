@@ -9,10 +9,10 @@ format-python:
 format: format-rust format-python
 
 lint-rust:
-	@cargo +nightly fmt -- --check
+	@cargo +nightly fmt --check
 	@cargo clippy -- -D warnings
 	@cd python
-	@cargo +nightly fmt -- --check
+	@cargo +nightly fmt --check
 	@cargo clippy -- -D warnings
 
 lint-python:
