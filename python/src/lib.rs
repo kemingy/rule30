@@ -52,7 +52,7 @@ impl Rule30 {
 
 /// A Python module implemented in Rust.
 #[pymodule]
-fn rule30py(_py: Python, m: &PyModule) -> PyResult<()> {
+fn rule30py(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<Rule30>()?;
     Ok(())
 }
