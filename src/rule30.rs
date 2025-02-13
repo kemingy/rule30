@@ -56,7 +56,7 @@ impl Rule30 {
     }
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct Rule30RngSeed(pub [u8; SIZE * 4]);
 
 impl Default for Rule30RngSeed {
@@ -110,12 +110,6 @@ impl RngCore for Rule30 {
     fn fill_bytes(&mut self, dest: &mut [u8]) {
         fill_bytes_via_next(self, dest)
     }
-
-    #[inline]
-    fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), rand_core::Error> {
-        self.fill_bytes(dest);
-        Ok(())
-    }
 }
 
 #[cfg(test)]
@@ -134,7 +128,7 @@ mod tests {
         assert_eq!(rng_u64.next_u64(), 17383184802059299178);
         assert_eq!(rng_u64.next_u64(), 11370733897491177609);
 
-        let mut rng_gen = Rule30::from_rng(&mut rng_u32).unwrap();
+        let mut rng_gen = Rule30::from_rng(&mut rng_u32);
         assert_eq!(rng_gen.next_u32(), 1149652508);
 
         let seed: [u8; SIZE * 4] = core::array::from_fn(|x| x as u8);
