@@ -70,7 +70,7 @@ impl ExtendedCA {
     }
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct ExtendedRngSeed(pub [u8; SIZE * 8]);
 
 impl Default for ExtendedRngSeed {
@@ -121,12 +121,6 @@ impl RngCore for ExtendedCA {
     fn fill_bytes(&mut self, dest: &mut [u8]) {
         fill_bytes_via_next(self, dest)
     }
-
-    #[inline]
-    fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), rand_core::Error> {
-        self.fill_bytes(dest);
-        Ok(())
-    }
 }
 
 #[cfg(test)]
@@ -145,7 +139,7 @@ mod tests {
         assert_eq!(rng_u32.next_u32(), 2046122492);
         assert_eq!(rng_u32.next_u32(), 3980348366);
 
-        let mut rng_gen = ExtendedCA::from_rng(&mut rng_u64).unwrap();
+        let mut rng_gen = ExtendedCA::from_rng(&mut rng_u64);
         assert_eq!(rng_gen.next_u64(), 9131884500388100982);
 
         let seed: [u8; SIZE * 8] = core::array::from_fn(|x| x as u8);
