@@ -58,7 +58,7 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: wheels-linux-${{ matrix.platform.target }}
-          path: dist
+          path: ${{ env.PYTHON_DIST_DIR }}
 
   musllinux:
     runs-on: ${{ matrix.platform.runner }}
