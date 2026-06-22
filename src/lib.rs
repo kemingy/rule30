@@ -3,7 +3,7 @@
 //! ## Examples
 //!
 //! ```
-//! use rand_core::{RngCore, SeedableRng};
+//! use rand_core::{Rng, SeedableRng};
 //! use rule30::ExtendedCA;
 //!
 //! let mut ca = ExtendedCA::seed_from_u64(42);
@@ -20,7 +20,7 @@ pub mod prelude;
 mod rule30;
 
 // Re-exports from rand_core
-pub use rand_core::{RngCore, SeedableRng};
+pub use rand_core::{Rng, SeedableRng};
 
 pub use self::extended_ca::ExtendedCA;
 pub use self::rule30::Rule30;
