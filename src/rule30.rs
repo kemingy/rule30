@@ -1,6 +1,6 @@
-use rand_core::impls::{fill_bytes_via_next, next_u64_via_u32};
-use rand_core::le::read_u32_into;
-use rand_core::{RngCore, SeedableRng};
+use core::convert::Infallible;
+
+use rand_core::{SeedableRng, TryRng, utils};
 
 // Default cells number is 9 x 29 = 261.
 const SIZE: usize = 9;
@@ -81,15 +81,16 @@ impl SeedableRng for Rule30 {
     type Seed = Rule30RngSeed;
 
     fn from_seed(seed: Self::Seed) -> Self {
-        let mut seed_u32 = [0u32; SIZE];
-        read_u32_into(seed.as_ref(), &mut seed_u32);
+        let seed_u32 = utils::read_words::<u32, SIZE>(seed.as_ref());
         Rule30::new(seed_u32)
     }
 }
 
-impl RngCore for Rule30 {
+impl TryRng for Rule30 {
+    type Error = Infallible;
+
     #[inline]
-    fn next_u32(&mut self) -> u32 {
+    fn try_next_u32(&mut self) -> Result<u32, Self::Error> {
         let mut record: u32 = 0;
         for _ in 0..self.round {
             for i in 0..SIZE {
@@ -98,23 +99,23 @@ impl RngCore for Rule30 {
             }
             self.step();
         }
-        record
+        Ok(record)
     }
 
     #[inline]
-    fn next_u64(&mut self) -> u64 {
-        next_u64_via_u32(self)
+    fn try_next_u64(&mut self) -> Result<u64, Self::Error> {
+        utils::next_u64_via_u32(self)
     }
 
     #[inline]
-    fn fill_bytes(&mut self, dest: &mut [u8]) {
-        fill_bytes_via_next(self, dest)
+    fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), Self::Error> {
+        utils::fill_bytes_via_next_word(dest, || self.try_next_u32())
     }
 }
 
 #[cfg(test)]
 mod tests {
-    use rand_core::{RngCore, SeedableRng};
+    use rand_core::{Rng, SeedableRng};
 
     use super::{Rule30, Rule30RngSeed, SIZE};
 

@@ -1,6 +1,6 @@
-use rand_core::impls::fill_bytes_via_next;
-use rand_core::le::read_u64_into;
-use rand_core::{RngCore, SeedableRng};
+use core::convert::Infallible;
+
+use rand_core::{SeedableRng, TryRng, utils};
 
 // Default cells number is 80 x 64 = 5120.
 const SIZE: usize = 80;
@@ -95,37 +95,38 @@ impl SeedableRng for ExtendedCA {
     type Seed = ExtendedRngSeed;
 
     fn from_seed(seed: Self::Seed) -> Self {
-        let mut seed_u64 = [0u64; SIZE];
-        read_u64_into(seed.as_ref(), &mut seed_u64);
+        let seed_u64 = utils::read_words(seed.as_ref());
         ExtendedCA::new(seed_u64)
     }
 }
 
-impl RngCore for ExtendedCA {
+impl TryRng for ExtendedCA {
+    type Error = Infallible;
+
     #[inline]
-    fn next_u32(&mut self) -> u32 {
-        self.next_u64() as u32
+    fn try_next_u32(&mut self) -> Result<u32, Self::Error> {
+        self.try_next_u64().map(|x| x as u32)
     }
 
     #[inline]
-    fn next_u64(&mut self) -> u64 {
+    fn try_next_u64(&mut self) -> Result<u64, Self::Error> {
         let mut num: u64 = 0;
         for i in INDEX.iter() {
             num = (num << 1) | (self.state[*i] & MASK);
         }
         self.step();
-        num
+        Ok(num)
     }
 
     #[inline]
-    fn fill_bytes(&mut self, dest: &mut [u8]) {
-        fill_bytes_via_next(self, dest)
+    fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), Self::Error> {
+        utils::fill_bytes_via_next_word(dest, || self.try_next_u64())
     }
 }
 
 #[cfg(test)]
 mod tests {
-    use rand_core::{RngCore, SeedableRng};
+    use rand_core::{Rng, SeedableRng};
 
     use super::{ExtendedCA, ExtendedRngSeed, SIZE};
 

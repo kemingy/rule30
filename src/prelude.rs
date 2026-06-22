@@ -9,7 +9,7 @@
 
 // required dependencies
 #[doc(no_inline)]
-pub use rand_core::{RngCore, SeedableRng};
+pub use rand_core::{Rng, SeedableRng};
 
 // internal modules
 #[doc(no_inline)]

@@ -1,6 +1,5 @@
 use pyo3::prelude::*;
-use rand::Rng;
-use rule30::prelude::*;
+use rule30::{ExtendedCA, Rng, SeedableRng};
 
 // Copied from src/extended_ca.rs
 const SIZE: usize = 80;
@@ -23,7 +22,10 @@ impl Rule30 {
 
     #[pyo3(text_signature = "($self)")]
     fn next_random(&mut self) -> PyResult<f64> {
-        Ok(self.0.gen::<f64>())
+        const FLOAT_BITS: u32 = 53;
+        const SCALE: f64 = 1.0 / ((1u64 << FLOAT_BITS) as f64);
+
+        Ok(((self.0.next_u64() >> (u64::BITS - FLOAT_BITS)) as f64) * SCALE)
     }
 
     #[pyo3(text_signature = "($self)")]
