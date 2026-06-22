@@ -10,5 +10,5 @@ name = "rule30py"
 crate-type = ["cdylib"]
 
 [dependencies]
-pyo3 = { version = "0.24", features = ["abi3-py310"] }
+pyo3 = { version = "0.29", features = ["abi3-py310"] }
 rule30 = { path = "../" }
